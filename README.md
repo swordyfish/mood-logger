@@ -1,5 +1,5 @@
 # mood-logger
-Quick and simple mood logger using Streamlit! 
+Quick and simple mood logger using Streamlit! You can check out the running app at: https://jgochioco-mood-logger.streamlit.app/
 
 🧠 Mood Logger
 - Log your mood, add a note if you'd like, and then visualize how your day is going!
