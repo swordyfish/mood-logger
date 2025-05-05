@@ -1,0 +1,15 @@
+# Don't upload your virtual environment
+.venv/
+
+# Don't upload your credentials
+creds.json
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# VSCode settings (optional)
+.vscode/
+
+# Mac system files
+.DS_Store
