@@ -1,4 +1,9 @@
 import streamlit as st
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+from datetime import datetime
+import pandas as pd
+import plotly.express as px
 
 # Initialize mood in session state
 if "mood" not in st.session_state:
@@ -37,10 +42,6 @@ st.markdown("""
 st.markdown("<h2 style='font-size: 32px;'>Optional note:</h2>", unsafe_allow_html=True)
 note = st.text_area("Optional note:")
 
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-from datetime import datetime
-
 def append_to_sheet(mood, note):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
     creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
@@ -56,10 +57,6 @@ def append_to_sheet(mood, note):
 if st.button("Submit") and st.session_state["mood"]:
     append_to_sheet(st.session_state["mood"], note)
     st.success("Mood logged successfully!")
-
-
-import pandas as pd
-import plotly.express as px
 
 # Helper to fetch sheet as DataFrame
 def get_today_mood_counts():
@@ -80,7 +77,7 @@ def get_today_mood_counts():
     return mood_counts
 
 # Show the bar chart
-if st.button("Show Today's Mood Chart"):
+if st.button("Show Mood Chart"):
     mood_counts = get_today_mood_counts()
     if not mood_counts.empty:
         fig = px.bar(mood_counts, x='mood', y='count', color='mood', title="Today's Mood Summary")
