@@ -4,6 +4,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 import pandas as pd
 import plotly.express as px
+import json 
 
 # Initialize mood in session state
 if "mood" not in st.session_state:
@@ -44,7 +45,11 @@ note = st.text_area("Optional note:")
 
 def append_to_sheet(mood, note):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
+    
+    # Load creds from secrets
+    creds_dict = json.loads(st.secrets["creds"])
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+    # creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
     client = gspread.authorize(creds)
 
     # Open sheet by name
@@ -61,7 +66,11 @@ if st.button("Submit") and st.session_state["mood"]:
 # Helper to fetch sheet as DataFrame
 def get_today_mood_counts():
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
+    
+    # Load creds from secrets
+    creds_dict = json.loads(st.secrets["creds"])
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+    # creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
     client = gspread.authorize(creds)
     sheet = client.open("Mood Logger").sheet1
     data = sheet.get_all_records()
